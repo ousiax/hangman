@@ -27,8 +27,8 @@ module Hangman
     end
 
     # Returns a tuple [body, message].
-    # If third element `message` represents a error message.
-    # A `nil` value indicates the if exited normally, otherwise there was an error.
+    # The 2nd element `message` represents a error message,
+    # and `nil` value if exited normally, otherwise there was an error.
     def post(payload)
       begin
         response = RestClient.post @request_url, payload.to_json, HEADERS
