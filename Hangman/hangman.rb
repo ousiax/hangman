@@ -31,20 +31,19 @@ module Hangman
     # and `nil` value if exited normally, otherwise there was an error.
     def post(payload)
       begin
-        response = RestClient.post @request_url, payload.to_json, HEADERS
-        if response.code > 200
+        raw_response = RestClient.post @request_url, payload.to_json, HEADERS
+        if raw_response.code > 200
           [nil, "Unhandled Exception!"]
         else
-          res = JSON.parse response.body
+          res = JSON.parse raw_response.body
           [res, nil]
         end
       rescue RestClient::Exception => ex
-        response = ex.response
-        if ERROR_HTTP_STATUS_CODES.include? response.http_code
-          res = JSON.parse response.body
+        if ERROR_HTTP_STATUS_CODES.include? ex.http_code
+          res = JSON.parse ex.http_body
           message = "#{res['message']}"
         else
-          message = response.message
+          message = ex.message
         end
         [nil, message]
       end

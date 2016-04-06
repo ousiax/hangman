@@ -9,14 +9,18 @@ module Hangman
   end
 
   LETTERS = ('A'..'Z').to_a
-  PLAYER_ID = "xyz@qprt.com"
-  REQUEST_URL = "http://www.domain-name.com/game/on"
+  # PLAYER_ID = "xyz@qprt.com"
+  # REQUEST_URL = "http://www.domain-name.com/game/on"
+
+  File.open("player.info") do |f|
+    PLAYER_ID, REQUEST_URL = eval(f.readline)
+  end
 
   game = Game.new PLAYER_ID, REQUEST_URL
 
   res, err = game.start_game
   if err
-    Abort("Abort! #{err}")
+    abort("Abort! #{err}")
   end
 
   # Start game
@@ -26,7 +30,7 @@ module Hangman
   until total_word_count > game.number_of_words_to_guess
     res, err = game.next_word
     if err
-      Abort("Abort! #{err}")
+      abort("Abort! #{err}")
     end
 
     # Guess a word #{total_word_count}/#{number_of_words_to_guess}"
@@ -45,7 +49,7 @@ module Hangman
 
       res, err = game.guess_word letter
       if err
-        Abort("Abort! #{err}")
+        abort("Abort! #{err}")
       end
       unless word.include? '*'
         break
