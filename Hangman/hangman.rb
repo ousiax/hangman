@@ -13,6 +13,8 @@ module Hangman
     HEADERS = { content_type: "application/json", accept: "application/json" }
 
     def initialize(player_id, request_url)
+      raise "'player_id' Required." unless player_id
+      raise "'request_url' Required." unless request_url
       @player_id = player_id
       @request_url = request_url
 
@@ -47,7 +49,7 @@ module Hangman
       rescue RestClient::Exception => ex
         if ERROR_HTTP_STATUS_CODES.include? ex.http_code
           res = JSON.parse ex.http_body
-          message = "#{res['message']}"
+          message = res['message']
         else
           message = ex.message
         end

@@ -5,13 +5,13 @@
 # Copyright (c) 2016 Roy Xu
 
 require_relative 'hangman'
-require_relative 'letters'
+require_relative 'letters_generator'
 
 module Hangman
   class Player
     def initialize(player_id, request_url)
-      raise "Require player_id!" unless player_id
-      raise "Require request_url!" unless request_url
+      raise "'player_id' Required." unless player_id
+      raise "'request_url' Required." unless request_url
       @game = Game.new player_id, request_url
     end
 
@@ -29,7 +29,7 @@ module Hangman
     private :start_game
 
     def guess_words
-      letters_generator = LetterGenerator.new 0
+      letters_generator = LettersGenerator.new 0
       total_word_count = 1
       until total_word_count > @game.number_of_words_to_guess
         res, err = @game.next_word
@@ -38,10 +38,9 @@ module Hangman
         puts_message "Guess a word #{total_word_count}/#{@game.number_of_words_to_guess}"
 
         word = res["data"]["word"]
-
         # rewind letters generator
         letters_generator.rewind word.size
-        puts_message "Rewind LetterGenerator: #{word.size}"
+        # puts_message "Rewind Letter Generator: #{word.size}"
 
         number_of_guess  = 1
         until number_of_guess > @game.number_of_guess_allowed_for_each_word
@@ -53,9 +52,8 @@ module Hangman
           res, err = @game.guess_word letter
           abort("Abort! #{err}") if err
 
-          break unless word.include? '*'
           word = res["data"]['word']
-          puts_message " => #{word},"
+          puts_message " => #{word}"
           # TODO: Optimize guess algorithm.
           # wrong_guess_count_of_current_word = res["data"]['wrongGuessCountOfCurrentWord']
           # if wrong_guess_count_of_current_word / word.size.to_f >= 0.65
@@ -63,6 +61,7 @@ module Hangman
           #   break;
           # end
 
+          break unless word.include? '*'
           number_of_guess += 1
         end
         total_word_count += 1
@@ -81,12 +80,12 @@ module Hangman
       abort("Abort! #{err}") if err
 
       data = res["data"]
-      puts_message "---------------------------\n" \
-        "totalWordCount: #{data['totalWordCount']}\n" \
-        "correctWordCount: #{data['correctWordCount']}\n" \
-        "totalWrongGuessCount: #{data['totalWrongGuessCount']}\n" \
-        "score: #{data['score']}\n" \
-        "---------------------------\n"
+      puts_message "---------------------------\n"
+      puts_message "totalWordCount: #{data['totalWordCount']}\n"
+      puts_message "correctWordCount: #{data['correctWordCount']}\n"
+      puts_message "totalWrongGuessCount: #{data['totalWrongGuessCount']}\n"
+      puts_message "score: #{data['score']}\n"
+      puts_message "---------------------------\n"
     end
 
     # Submit results
@@ -96,15 +95,15 @@ module Hangman
 
       puts_message res["message"]
       data = res["data"]
-      puts_message "---------------------------\n" \
-        "playerId: #{data['playerId']}\n" \
-        "sessionId: #{data['sessionId']}\n" \
-        "totalWordCount: #{data['correctWordCount']}\n" \
-        "correctWordCount: #{data['correctWordCount']}\n" \
-        "totalWrongGuessCount: #{data['totalWrongGuessCount']}\n" \
-        "score: #{data['score']}\n" \
-        "datetime: #{data['datetime']}\n" \
-        "---------------------------\n"
+      puts_message "---------------------------\n"
+      puts_message "playerId: #{data['playerId']}\n"
+      puts_message "sessionId: #{data['sessionId']}\n"
+      puts_message "totalWordCount: #{data['correctWordCount']}\n"
+      puts_message "correctWordCount: #{data['correctWordCount']}\n"
+      puts_message "totalWrongGuessCount: #{data['totalWrongGuessCount']}\n"
+      puts_message "score: #{data['score']}\n"
+      puts_message "datetime: #{data['datetime']}\n"
+      puts_message "---------------------------\n"
     end
   end
 end
