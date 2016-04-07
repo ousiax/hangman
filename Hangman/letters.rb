@@ -3,6 +3,7 @@
 # The MIT License (MIT)
 #
 # Copyright (c) 2016 Roy Xu
+
 module Hangman
   class LetterGenerator
     LETTERS = ('A'..'Z').to_a
@@ -31,7 +32,8 @@ module Hangman
     }
 
     def initialize(length)
-      rewind length
+      @length = length || 0;
+      rewind @length
       @fiber = Fiber.new {
         @opt_letters ||= []
         loop do

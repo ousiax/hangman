@@ -3,6 +3,7 @@
 # The MIT License (MIT)
 #
 # Copyright (c) 2016 Roy Xu
+
 require_relative 'hangman'
 require_relative 'letters'
 
