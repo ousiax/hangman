@@ -1,5 +1,7 @@
-#!/usr/bin/env ruby
 # -*- coding: utf-8 -*-
+# The MIT License (MIT)
+#
+# Copyright (c) 2016 Roy Xu
 
 require 'rest-client'
 require 'json'

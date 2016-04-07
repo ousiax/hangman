@@ -1,9 +1,13 @@
 # Hangman
 Play Hangman with Ruby language.
 
-***Configuration***
+1. Configuration
 
-    $ cat ["xyz@qprt.com", "http://www.domain-name.com/game/on"] > player.info
+        $ cat ["xyz@qprt.com", "http://www.domain-name.com/game/on"] > player.info
+    
+2. Play game
+
+        $ ./player.rb # Or ruby player.rb
 
 * * *
 

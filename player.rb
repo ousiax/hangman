@@ -1,85 +1,101 @@
 #!/usr/bin/env ruby
 # -*- coding: utf-8 -*-
 
+# The MIT License (MIT)
+#
+# Copyright (c) 2016 Roy Xu
 require_relative 'Hangman/hangman'
+require_relative 'letters'
+
 module Hangman
-
-  def self.puts_message(message)
-    puts ">>> #{message}"
-  end
-
-  LETTERS = ('A'..'Z').to_a
-  # PLAYER_ID = "xyz@qprt.com"
-  # REQUEST_URL = "http://www.domain-name.com/game/on"
-
-  File.open("player.info") do |f|
-    PLAYER_ID, REQUEST_URL = eval(f.readline)
-  end
-
-  game = Game.new PLAYER_ID, REQUEST_URL
-
-  res, err = game.start_game
-  if err
-    abort("Abort! #{err}")
-  end
-
-  # Start game
-  puts_message "#{res['message']}"
-
-  total_word_count = 1
-  until total_word_count > game.number_of_words_to_guess
-    res, err = game.next_word
-    if err
-      abort("Abort! #{err}")
+  class Player
+    def initialize
+      # player_id = "xyz@qprt.com"
+      # request_url = "http://www.domain-name.com/game/on"
+      File.open("player.info") do |f|
+        @player_id, @request_url = eval(f.readline)
+      end
+      @game = Game.new @player_id, @request_url
     end
 
-    # Guess a word #{total_word_count}/#{number_of_words_to_guess}"
-    puts_message "Guess a word #{total_word_count}/#{game.number_of_words_to_guess}"
-
-    word = res["data"]["word"]
-
-    letters = LETTERS.clone
-    number_of_guess  = 1
-    until number_of_guess > game.number_of_guess_allowed_for_each_word
-      letter = letters.sample
-      letters.delete(letter)
-
-      # Guess a letter
-      puts_message "(#{number_of_guess.to_s.rjust(2)}) Guess '#{letter}' in '#{word}'"
-
-      res, err = game.guess_word letter
-      if err
-        abort("Abort! #{err}")
-      end
-      unless word.include? '*'
-        break
-      end
-      word = res["data"]['word']
-      # TODO: Optimize guess algorithm.
-      # wrong_guess_count _of_current_word = res["data"]['wrongGuessCountOfCurrentWord']
-      number_of_guess += 1
+    def puts_message(message)
+      puts ">>> #{message}"
     end
-    total_word_count += 1
-  end
+    private :puts_message
 
-  # Get result
-  res, err = game.get_result
-  if err
-    abort("Abort! #{err}")
-  end
-  data = res["data"]
-  puts_message "---------------------------\n" \
-    "totalWordCount: #{data['totalWordCount']}\n" \
-    "correctWordCount: #{data['correctWordCount']}\n" \
-    "totalWrongGuessCount: #{data['totalWrongGuessCount']}\n" \
-    "score: #{data['score']}\n" \
-    "---------------------------\n"
+    def start_game
+      res, err = @game.start_game
+      abort("Abort! #{err}") if err
 
-  # Submit results
-  res, err = game.submit_result
-  if err
-    abort("Abort! #{err}")
+      puts_message "#{res['message']}"
+    end
+    private :start_game
+
+    def guess_words
+      total_word_count = 1
+      until total_word_count > @game.number_of_words_to_guess
+        res, err = @game.next_word
+        abort("Abort! #{err}") if err
+
+        puts_message "Guess a word #{total_word_count}/#{@game.number_of_words_to_guess}"
+
+        word = res["data"]["word"]
+
+        letters_generator = LetterGenerator.new word.size
+        number_of_guess  = 1
+        until number_of_guess > @game.number_of_guess_allowed_for_each_word
+          # Guess a letter in word
+          letter = letters_generator.next word
+          raise "No more letters to guess." unless letter
+          puts_message "(#{number_of_guess.to_s.rjust(2)}) Guess '#{letter}' in '#{word}'"
+
+          res, err = @game.guess_word letter
+          abort("Abort! #{err}") if err
+
+          break unless word.include? '*'
+
+          word = res["data"]['word']
+          # TODO: Optimize guess algorithm.
+          # wrong_guess_count _of_current_word = res["data"]['wrongGuessCountOfCurrentWord']
+          number_of_guess += 1
+        end
+        total_word_count += 1
+      end
+    end
+    private :guess_words
+
+    def play_game
+      start_game
+      guess_words
+    end
+
+    # Get result
+    def get_result
+      res, err = @game.get_result
+      abort("Abort! #{err}") if err
+
+      data = res["data"]
+      puts_message "---------------------------\n" \
+        "totalWordCount: #{data['totalWordCount']}\n" \
+        "correctWordCount: #{data['correctWordCount']}\n" \
+        "totalWrongGuessCount: #{data['totalWrongGuessCount']}\n" \
+        "score: #{data['score']}\n" \
+        "---------------------------\n"
+    end
+
+    # Submit results
+    def submit_result
+      res, err = @game.submit_result
+      abort("Abort! #{err}") if err
+    end
   end
 end
+
+# -----------Gorgeous  line-----------
+
+player = Hangman::Player.new
+player.play_game
+player.get_result
+player.submit_result
 
 __END__
