@@ -32,6 +32,7 @@ module Hangman
     private :start_game
 
     def guess_words
+      letters_generator = LetterGenerator.new 0
       total_word_count = 1
       until total_word_count > @game.number_of_words_to_guess
         res, err = @game.next_word
@@ -40,8 +41,7 @@ module Hangman
         puts_message "Guess a word #{total_word_count}/#{@game.number_of_words_to_guess}"
 
         word = res["data"]["word"]
-
-        letters_generator = LetterGenerator.new word.size
+        letters_generator.rewind word.size
         number_of_guess  = 1
         until number_of_guess > @game.number_of_guess_allowed_for_each_word
           # Guess a letter in word

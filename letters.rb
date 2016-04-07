@@ -35,7 +35,7 @@ module Hangman
       @letters = LETTERS.clone
       @opt_letters = OPT_LETTERS_CHART[length] if length >= 1 && length <= 20
       @fiber = Fiber.new {
-        opt_letters ||= []
+        @opt_letters ||= []
         loop do
           letter = @opt_letters.shift
           letter ||= @letters.delete(@letters.sample)
