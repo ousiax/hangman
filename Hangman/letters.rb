@@ -31,9 +31,7 @@ module Hangman
     }
 
     def initialize(length)
-      @length = length
-      @letters = LETTERS.clone
-      @opt_letters = OPT_LETTERS_CHART[length] if length >= 1 && length <= 20
+      rewind length
       @fiber = Fiber.new {
         @opt_letters ||= []
         loop do
@@ -45,14 +43,14 @@ module Hangman
     end
 
     # TODO: optimize next letter with the current `word`.
-    def next(word)    # Return the next letter
+    def next(word=nil)    # Return the next letter
       @fiber.resume word
     end
 
     def rewind(length=nil)  # Restart the sequence
       @length = length || @length
       @letters = LETTERS.clone
-      @opt_letters = OPT_LETTERS_CHART[length] if length >= 1 && length <= 20
+      @opt_letters = OPT_LETTERS_CHART[@length] if @length >= 1 && @length <= 20
     end
 
   end
