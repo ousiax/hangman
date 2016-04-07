@@ -26,9 +26,12 @@ module Hangman
       @number_of_guess_allowed_for_each_word
     end
 
-    # Returns a tuple [body, message].
+    # Returns a tuple [response, message].
+    #
+    # The 1st element `response` represent a response message with a `hash` object.
+    #
     # The 2nd element `message` represents a error message,
-    # and `nil` value if exited normally, otherwise there was an error.
+    # and `nil` value indicates it exited normally, otherwise there was an error.
     def post(payload)
       begin
         raw_response = RestClient.post @request_url, payload.to_json, HEADERS
