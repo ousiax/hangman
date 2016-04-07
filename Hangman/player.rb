@@ -16,7 +16,7 @@ module Hangman
     end
 
     def puts_message(message)
-      puts ">>> #{message}"
+      puts " > #{message}"
     end
     private :puts_message
 
@@ -24,7 +24,7 @@ module Hangman
       res, err = @game.start_game
       abort("Abort! #{err}") if err
 
-      puts_message "#{res['message']}"
+      puts_message "#{res['message']} => #{res['sessionId']}"
     end
     private :start_game
 
@@ -54,14 +54,14 @@ module Hangman
           abort("Abort! #{err}") if err
 
           break unless word.include? '*'
-
           word = res["data"]['word']
+          puts_message " => #{word},"
           # TODO: Optimize guess algorithm.
-          wrong_guess_count_of_current_word = res["data"]['wrongGuessCountOfCurrentWord']
-          if wrong_guess_count_of_current_word / word.size.to_f >= 0.65
-            puts_message "Abandon the word: #{word}"
-            break;
-          end
+          # wrong_guess_count_of_current_word = res["data"]['wrongGuessCountOfCurrentWord']
+          # if wrong_guess_count_of_current_word / word.size.to_f >= 0.65
+          #   puts_message "Abandon the word: #{word}"
+          #   break;
+          # end
 
           number_of_guess += 1
         end
@@ -93,6 +93,18 @@ module Hangman
     def submit_result
       res, err = @game.submit_result
       abort("Abort! #{err}") if err
+
+      puts_message res["message"]
+      data = res["data"]
+      puts_message "---------------------------\n" \
+        "playerId: #{data['playerId']}\n" \
+        "sessionId: #{data['sessionId']}\n" \
+        "totalWordCount: #{data['correctWordCount']}\n" \
+        "correctWordCount: #{data['correctWordCount']}\n" \
+        "totalWrongGuessCount: #{data['totalWrongGuessCount']}\n" \
+        "score: #{data['score']}\n" \
+        "datetime: #{data['datetime']}\n" \
+        "---------------------------\n"
     end
   end
 end
