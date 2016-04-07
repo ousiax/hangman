@@ -55,7 +55,12 @@ module Hangman
 
           word = res["data"]['word']
           # TODO: Optimize guess algorithm.
-          # wrong_guess_count _of_current_word = res["data"]['wrongGuessCountOfCurrentWord']
+          wrong_guess_count_of_current_word = res["data"]['wrongGuessCountOfCurrentWord']
+          if wrong_guess_count_of_current_word / word.size.to_f >= 0.65
+            puts_message "Abandon the word: #{word}"
+            break;
+          end
+
           number_of_guess += 1
         end
         total_word_count += 1
