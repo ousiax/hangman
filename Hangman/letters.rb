@@ -50,7 +50,7 @@ module Hangman
     def rewind(length=nil)  # Restart the sequence
       @length = length || @length
       @letters = LETTERS.clone
-      @opt_letters = OPT_LETTERS_CHART[@length] if @length >= 1 && @length <= 20
+      @opt_letters = OPT_LETTERS_CHART[@length].clone if @length >= 1 && @length <= 20
     end
 
   end
