@@ -7,7 +7,7 @@ Play Hangman with Ruby language.
     
 2. Play game
 
-        $ ./player.rb # Or ruby player.rb
+        $ ./play.rb # Or ruby play.rb
 
 * * *
 

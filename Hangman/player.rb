@@ -1,21 +1,17 @@
-#!/usr/bin/env ruby
 # -*- coding: utf-8 -*-
 
 # The MIT License (MIT)
 #
 # Copyright (c) 2016 Roy Xu
-require_relative 'Hangman/hangman'
+require_relative 'hangman'
 require_relative 'letters'
 
 module Hangman
   class Player
-    def initialize
-      # player_id = "xyz@qprt.com"
-      # request_url = "http://www.domain-name.com/game/on"
-      File.open("player.info") do |f|
-        @player_id, @request_url = eval(f.readline)
-      end
-      @game = Game.new @player_id, @request_url
+    def initialize(player_id, request_url)
+      raise "Require player_id!" unless player_id
+      raise "Require request_url!" unless request_url
+      @game = Game.new player_id, request_url
     end
 
     def puts_message(message)
@@ -90,12 +86,3 @@ module Hangman
     end
   end
 end
-
-# -----------Gorgeous  line-----------
-
-player = Hangman::Player.new
-player.play_game
-player.get_result
-player.submit_result
-
-__END__
