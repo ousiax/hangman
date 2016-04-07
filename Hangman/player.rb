@@ -37,13 +37,16 @@ module Hangman
         puts_message "Guess a word #{total_word_count}/#{@game.number_of_words_to_guess}"
 
         word = res["data"]["word"]
+
+        # rewind letters generator
         letters_generator.rewind word.size
+
         number_of_guess  = 1
         until number_of_guess > @game.number_of_guess_allowed_for_each_word
           # Guess a letter in word
           letter = letters_generator.next word
           raise "No more letters to guess." unless letter
-          puts_message "(#{number_of_guess.to_s.rjust(2)}) Guess '#{letter}' in '#{word}'"
+          puts_message "(#{number_of_guess.to_s.rjust(2)}) Guess '#{letter}' in '#{word}', length: #{word.size}"
 
           res, err = @game.guess_word letter
           abort("Abort! #{err}") if err
