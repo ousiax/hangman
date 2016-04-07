@@ -7,4 +7,6 @@
 
 source "https://gems.ruby-china.org"
 
-gem "rest-client"
+gem "rest-client", "1.8.0"
+
+ruby '2.3.0'
