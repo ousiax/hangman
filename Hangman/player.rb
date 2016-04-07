@@ -40,6 +40,7 @@ module Hangman
 
         # rewind letters generator
         letters_generator.rewind word.size
+        puts_message "Rewind LetterGenerator: #{word.size}"
 
         number_of_guess  = 1
         until number_of_guess > @game.number_of_guess_allowed_for_each_word
