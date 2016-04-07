@@ -11,4 +11,7 @@ Play Hangman with Ruby language.
 
 * * *
 
-#### TODO: [a-better-strategy-for-hangman](http://lifehacker.com/5898720/a-better-strategy-for-hangman)
+#### References
+
+* [a-better-strategy-for-hangman](http://lifehacker.com/5898720/a-better-strategy-for-hangman)
+* [Free Hangman Solver](http://hangman.doncolton.com/)
