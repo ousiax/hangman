@@ -1,9 +1,9 @@
 # Hangman
 Play Hangman with Ruby language.
 
-1. Configuration
+1. Config `Request URL` & `Player ID`
 
-        $ cat ["xyz@qprt.com", "http://www.domain-name.com/game/on"] > player.info
+        $ echo '["xyz@qprt.com", "http://www.domain-name.com/game/on"]' > player.info 
     
 2. Play game
 
