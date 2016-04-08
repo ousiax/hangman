@@ -27,12 +27,17 @@ module Hangman
               req["Referer"] = "http://hangman.doncolton.com/"
               # req["Connection"] = "keep-alive"
               req.set_form_data(pat: word, not: "", submit: "hangman")
-              res = http.request req
-              case res
-              when Net::HTTPOK
-                letters_match = LETTERS_PATTERN.match(res.body)
-                letters = letters_match[1].split(' ') if letters_match
-              else
+              begin
+                res = http.request req
+                case res
+                when Net::HTTPOK
+                  letters_match = LETTERS_PATTERN.match(res.body)
+                  letters = letters_match[1].split(' ') if letters_match
+                else
+                  letters = []
+                end
+              rescue => ex
+                puts " > FreeHangmanSolver##{ex.message}"
                 letters = []
               end
             end
