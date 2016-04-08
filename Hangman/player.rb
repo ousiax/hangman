@@ -80,12 +80,12 @@ module Hangman
       abort("Abort! #{err}") if err
 
       data = res["data"]
-      puts_message "---------------------------\n"
-      puts_message "totalWordCount: #{data['totalWordCount']}\n"
-      puts_message "correctWordCount: #{data['correctWordCount']}\n"
-      puts_message "totalWrongGuessCount: #{data['totalWrongGuessCount']}\n"
-      puts_message "score: #{data['score']}\n"
-      puts_message "---------------------------\n"
+      puts_message "---------------------------"
+      puts_message "totalWordCount: #{data['totalWordCount']}"
+      puts_message "correctWordCount: #{data['correctWordCount']}"
+      puts_message "totalWrongGuessCount: #{data['totalWrongGuessCount']}"
+      puts_message "score: #{data['score']}"
+      puts_message "---------------------------"
     end
 
     # Submit results
@@ -95,15 +95,15 @@ module Hangman
 
       puts_message res["message"]
       data = res["data"]
-      puts_message "---------------------------\n"
-      puts_message "playerId: #{data['playerId']}\n"
-      puts_message "sessionId: #{data['sessionId']}\n"
-      puts_message "totalWordCount: #{data['correctWordCount']}\n"
-      puts_message "correctWordCount: #{data['correctWordCount']}\n"
-      puts_message "totalWrongGuessCount: #{data['totalWrongGuessCount']}\n"
-      puts_message "score: #{data['score']}\n"
-      puts_message "datetime: #{data['datetime']}\n"
-      puts_message "---------------------------\n"
+      puts_message "---------------------------"
+      puts_message "playerId: #{data['playerId']}"
+      puts_message "sessionId: #{data['sessionId']}"
+      puts_message "totalWordCount: #{data['correctWordCount']}"
+      puts_message "correctWordCount: #{data['correctWordCount']}"
+      puts_message "totalWrongGuessCount: #{data['totalWrongGuessCount']}"
+      puts_message "score: #{data['score']}"
+      puts_message "datetime: #{data['datetime']}"
+      puts_message "---------------------------"
     end
   end
 end

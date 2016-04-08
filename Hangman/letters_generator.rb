@@ -46,7 +46,7 @@ module Hangman
             @last_word = word
             @opt_letters = hangman_solver.next word
             @opt_letters -= @not_letters
-            @rest_letter -= @opt_letters
+            @rest_letter = LETTERS.clone()  - @opt_letters - @not_letters
             print_message @opt_letters
           end
           letter = @opt_letters.shift
@@ -72,8 +72,8 @@ module Hangman
         @opt_letters = []
         @last_word = nil  # Reset @last_word as nil to retrieve @opt_letters from FreeHangmanSolver.
       end
-      @rest_letter = LETTERS.clone()  - @opt_letters
       @not_letters = []
+      @rest_letter = LETTERS.clone()  - @opt_letters - @not_letters
       print_message @opt_letters if @opt_letters.size > 0
     end
   end
